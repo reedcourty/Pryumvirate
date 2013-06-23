@@ -8,3 +8,6 @@ venv/
 
 # Commit logs:
 commit.log
+
+# Others:
+*.pyc
