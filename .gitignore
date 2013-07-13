@@ -11,3 +11,6 @@ commit.log
 
 # Others:
 *.pyc
+
+# Keys
+*.keys

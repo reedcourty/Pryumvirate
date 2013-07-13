@@ -8,8 +8,9 @@ class MyError(Exception):
     pass
 
 class MainWindow(QtGui.QMainWindow):
+    controller = None
 
-    def __init__(self, *args):
+    def __init__(self, controller, *args):
         apply(QtGui.QMainWindow.__init__, (self,) + args)
         self.resize(420, 450)
         self.setWindowTitle('Pryumvirate')
@@ -100,6 +101,8 @@ class MainWindow(QtGui.QMainWindow):
         self.gridLayout.addItem(spacerItem5, 2, 4, 1, 1)
 
         QtCore.QMetaObject.connectSlotsByName(self)
+        
+        self.controller = controller
 
     def ChangeLimits(self):
         self.label_jelenleg.setText(str(len(self.plainTextEdit_input.toPlainText())))
@@ -114,6 +117,7 @@ class MainWindow(QtGui.QMainWindow):
         if (len(self.plainTextEdit_input.toPlainText()) < 141):
             post = str(self.plainTextEdit_input.toPlainText().encode('utf-8'))
             post = post.replace(":)", "ツ")
+            self.controller.send(post)
         else:
             limiterror_str = u"Ha jól számolom, ez több, mint 140 karakter. Próbálj meg tömörebben fogalmazni!"
             limiterror = QtGui.QMessageBox.critical(self, u'Hm...', limiterror_str)

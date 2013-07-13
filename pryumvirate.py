@@ -5,10 +5,14 @@ import sys
 from PySide import QtGui, QtCore
 
 import gui
+import controller
         
 def main(args):
     app = QtGui.QApplication(args)
-    win = gui.MainWindow()
+    app_controller = controller.Controller()
+    win = gui.MainWindow(app_controller)
+    app_controller.gui = win
+    app_controller.init_services()
     win.show()
     app.connect(app, QtCore.SIGNAL("lastWindowClosed()"),
                 app, QtCore.SLOT("quit()"))
