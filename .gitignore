@@ -12,5 +12,11 @@ commit.log
 # Others:
 *.pyc
 
-# Keys
+# Keys:
 *.keys
+
+# Launcher:
+start.py
+
+# Pryumvirate log:
+pryumvirate.log

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import sys
 from PySide import QtGui, QtCore
 
 class MyError(Exception):

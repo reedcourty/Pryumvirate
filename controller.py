@@ -2,11 +2,14 @@
 # -*- coding: UTF-8 -*-
 
 import json
+import logging
 
 from PySide import QtGui, QtCore
 
 from plurk_oauth.PlurkAPI import PlurkAPI
 import tweepy
+
+logging.basicConfig(filename='pryumvirate.log',level=logging.DEBUG)
 
 class Controller:
     twitter = None
@@ -28,8 +31,8 @@ class Controller:
             plurk.authorize(data["ACCESS_TOKEN"],data["ACCESS_TOKEN_SECRET"])
             return plurk
         except Exception as e:
-            print("Valami error van a plurk loginnál :S")
-            print(e)
+            logging.debug("Valami error van a plurk loginnál :S")
+            logging.debug(e)
             self.gui.plainTextEdit_output.appendPlainText(u"Valami error van a plurk loginnál :S")
     
     def init_twitter(self):
@@ -43,29 +46,29 @@ class Controller:
             twitter = tweepy.API(auth)
             return twitter
         except Exception as e:
-            print("Valami error van a twitter loginnál :S")
-            print(e)
+            logging.debug("Valami error van a twitter loginnál :S")
+            logging.debug(e)
             self.gui.plainTextEdit_output.appendPlainText(u"Valami error van a twitter loginnál :S")
             
     def send(self, post):
         if (self.gui.checkBox_twitter.isChecked()):
             try:
                 status_twitter = self.twitter.update_status(str(post))
-                print(status_twitter)
+                logging.debug(status_twitter)
                 self.gui.plainTextEdit_output.appendPlainText(u"Twitter: {}\n".format(status_twitter.text))
                 last_twit = self.twitter.user_timeline(id="reedcourty",count=1)
                 last_twit_str = u"Utolsó tweet: {} ({}, forrás: {})".format(last_twit[0].text, str(last_twit[0].created_at), last_twit[0].source)
                 self.gui.plainTextEdit_output.appendPlainText(last_twit_str)
             except Exception as e:
-                print(e)
+                logging.debug(e)
                 self.gui.plainTextEdit_output.appendPlainText(u"Twitter: {}".format(e.message[0]['message']))
                 
         if (self.gui.checkBox_plurk.isChecked()):
             try:
                 status_plurk = self.plurk.callAPI('/APP/Timeline/plurkAdd', {'content': str(post), 'qualifier': ':' })
-                print(status_plurk['content'])
+                logging.debug(status_plurk['content'])
                 self.gui.plainTextEdit_output.appendPlainText(u"Plurk: {}\n".format(status_plurk['content']))
             except Exception as e:
-                print(e)
+                logging.debug(e)
                 self.gui.plainTextEdit_output.appendPlainText(u"Plurk: {}\n".format(e.message[0]['message']))
             
